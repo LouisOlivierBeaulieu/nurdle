@@ -7,9 +7,21 @@ interface Props {
   invalidWord: boolean;
   pulsing: boolean;
   colors: string[];
+  currentLetter: number;
+  tryNb: number;
+  onClickLetter: (event: any) => void;
 }
 
-function Word({ size, value, invalidWord, colors, pulsing }: Props) {
+function Word({
+  size,
+  value,
+  invalidWord,
+  colors,
+  pulsing,
+  currentLetter,
+  tryNb,
+  onClickLetter,
+}: Props) {
   let word: React.JSX.Element[] = [];
 
   for (let i = 0; i < size; i++) {
@@ -18,8 +30,15 @@ function Word({ size, value, invalidWord, colors, pulsing }: Props) {
         key={"letter-" + i}
         value={value[i]}
         color={colors[i]}
-        pulse={pulsing && value[i] && !value[i + 1] ? "pulse" : ""}
+        pulse={
+          pulsing && ((currentLetter - 1 === i))
+            ? "pulse"
+            : ""
+        }
         index={i}
+        current={currentLetter === i || (currentLetter === size && i === size -1)  ? "current" : ""}
+        tryNb={tryNb}
+        onClickLetter={onClickLetter}
       />
     );
   }

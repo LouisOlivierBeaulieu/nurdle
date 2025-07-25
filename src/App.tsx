@@ -9,6 +9,7 @@ function App() {
   const [gameState, setGameState] = useState(GAME_STATE_MENU);
   const [size, setSize] = useState(5);
   const [tries, setTries] = useState(6);
+  const [lang, setlang] = useState("fr");
 
   return (
     <>
@@ -20,9 +21,16 @@ function App() {
           setTries={setTries}
           tries={tries}
           size={size}
+          setLang={setlang}
+          lang={lang}
         />
       ) : (
-        <Game setGameState={setGameState} tries={tries} size={size} />
+        <Game
+          setGameState={setGameState}
+          tries={tries}
+          size={size}
+          lang={lang}
+        />
       )}
       <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </>

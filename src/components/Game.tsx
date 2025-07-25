@@ -1,85 +1,97 @@
-import { useCallback, useRef, useState } from "react";
-import { GAME_STATE_MENU } from "../constants";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Keyboard from "./Keyboard";
 import Words from "./Words";
-import { en_3 } from "../wordlists/en_3";
-import { en_4 } from "../wordlists/en_4";
-import { en_5 } from "../wordlists/en_5";
-import { en_6 } from "../wordlists/en_6";
-import { en_7 } from "../wordlists/en_7";
-import { en_9 } from "../wordlists/en_9";
-import { en_8 } from "../wordlists/en_8";
-import { en_10 } from "../wordlists/en_10";
 
-function getWordlist(size: number) {
-  let wordlist: string[];
-  switch (size) {
-    case 3:
-      wordlist = en_3;
-      break;
-    case 4:
-      wordlist = en_4;
-      break;
-    case 5:
-      wordlist = en_5;
-      break;
-    case 6:
-      wordlist = en_6;
-      break;
-    case 7:
-      wordlist = en_7;
-      break;
-    case 8:
-      wordlist = en_8;
-      break;
-    case 9:
-      wordlist = en_9;
-      break;
-    case 10:
-      wordlist = en_10;
-      break;
-    default:
-      wordlist = en_5;
-  }
-  return wordlist;
-}
+import GameOver from "./GameOver";
+import {
+  NURDLE_STATE_LOSE,
+  NURDLE_STATE_PLAYING,
+  NURDLE_STATE_WIN,
+} from "../constants";
+import { getWordlist } from "../utils/getWordlist";
 
 interface Props {
   setGameState: (gameState: string) => void;
   tries: number;
   size: number;
+  lang: string;
 }
 
-function Game({ setGameState, tries, size }: Props) {
-  let wordlistRef = useRef(getWordlist(size));
+function Game({ setGameState, tries, size, lang }: Props) {
+  let wordlistRef = useRef(getWordlist(size, lang));
   let goalWordRef = useRef(
     wordlistRef.current[Math.floor(Math.random() * wordlistRef.current.length)]
   );
 
-  const [currentInputs, setCurrentInputs] = useState(Array(tries).fill(""));
+  const [currentInputs, setCurrentInputs] = useState(
+    Array(tries).fill("     ")
+  );
   const [currentTry, setCurrentTry] = useState(0);
   const [invalidWord, setInvalidWord] = useState(false);
   const [inputsColors, setInputsColors] = useState(
     Array(tries).fill(Array(size).fill(""))
   );
   const [keyColors, setkeyColors] = useState(Array(26).fill(""));
+  const [nurdleState, setNurdleState] = useState(NURDLE_STATE_PLAYING);
+  const [currentLetter, setCurrentLetter] = useState(0);
+  const [pulsing, setPulsing] = useState(false);
 
   const onClickLetter = useCallback(
-    (value: string) => {
-      if (currentInputs[currentTry].length < size) {
-        let newInputs = [...currentInputs];
-        newInputs[currentTry] += value;
-        setCurrentInputs(newInputs);
+    (event: any) => {
+      const id = event.target.id;
+      if (currentTry === parseInt(id.substring(0, id.indexOf("-")))) {
+        setCurrentLetter(
+          parseInt(
+            id.substring(
+              id.indexOf("-") + 1,
+              id.indexOf("-", id.indexOf("-") + 1)
+            )
+          )
+        );
       }
     },
-    [currentInputs, setCurrentInputs, currentTry, size]
+    [currentTry]
+  );
+
+  const onClickKey = useCallback(
+    (value: string) => {
+      if (currentLetter < size) {
+        let newInputs = [...currentInputs];
+        newInputs[currentTry] =
+          newInputs[currentTry].slice(0, currentLetter) +
+          value +
+          newInputs[currentTry].slice(currentLetter + 1);
+        setCurrentInputs(newInputs);
+        setCurrentLetter(currentLetter + 1 > size ? size : currentLetter + 1);
+        setPulsing(true);
+        setTimeout(() => {
+          setPulsing(false);
+        }, 150);
+      }
+    },
+    [currentInputs, setCurrentInputs, currentTry, size, currentLetter]
   );
 
   const onClickBackSpace = useCallback(() => {
-    let newInputs = [...currentInputs];
-    newInputs[currentTry] = newInputs[currentTry].slice(0, -1);
-    setCurrentInputs(newInputs);
-  }, [currentInputs, setCurrentInputs, currentTry]);
+    if (currentInputs[currentTry].trim() !== "") {
+      let newInputs = [...currentInputs];
+      newInputs[currentTry] =
+        newInputs[currentTry].slice(
+          0,
+          newInputs[currentTry].trimEnd().length - 1
+        ) +
+        " " +
+        newInputs[currentTry].slice(newInputs[currentTry].trimEnd().length);
+      setCurrentInputs(newInputs);
+      setCurrentLetter(
+        newInputs[currentTry].trimEnd().length < 0
+          ? 0
+          : newInputs[currentTry].trimEnd().length
+      );
+    }
+  }, [currentInputs, setCurrentInputs, currentTry, currentLetter]);
+
+  console.log(currentInputs);
 
   const validateWord = useCallback(
     async (word: string) => {
@@ -130,6 +142,14 @@ function Game({ setGameState, tries, size }: Props) {
 
       setkeyColors(newKeyColors);
       setInputsColors(newInputsColors);
+
+      if (
+        newInputsColors[currentTry].every((color: string) => color === "green")
+      ) {
+        setNurdleState(NURDLE_STATE_WIN);
+      } else if (currentTry + 1 === tries) {
+        setNurdleState(NURDLE_STATE_LOSE);
+      }
     },
     [inputsColors, currentTry, goalWordRef.current]
   );
@@ -142,6 +162,7 @@ function Game({ setGameState, tries, size }: Props) {
       validateWord(currentInputs[currentTry]);
       let newCurrentTry = currentTry + 1;
       setCurrentTry(newCurrentTry);
+      setCurrentLetter(0);
     } else {
       setInvalidWord(true);
       setTimeout(() => {
@@ -150,11 +171,43 @@ function Game({ setGameState, tries, size }: Props) {
     }
   }, [currentInputs, currentTry, size]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        onClickEnter();
+      } else if (e.keyCode === 8) {
+        onClickBackSpace();
+      } else if (e.keyCode >= 65 && e.keyCode <= 90) {
+        onClickKey(String.fromCharCode(e.keyCode).toUpperCase());
+      } else if (e.keyCode === 37) {
+        if (currentLetter === size) {
+          setCurrentLetter(currentLetter - 2);
+        } else {
+          setCurrentLetter(currentLetter - 1 < 0 ? 0 : currentLetter - 1);
+        }
+      } else if (e.keyCode === 39) {
+        setCurrentLetter(currentLetter + 1 > size ? size : currentLetter + 1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClickEnter, onClickBackSpace, onClickKey]);
+
   return (
     <>
-      <button onClick={() => setGameState(GAME_STATE_MENU)}>
-        {goalWordRef.current}
-      </button>
+      {nurdleState !== NURDLE_STATE_PLAYING && (
+        <GameOver
+          tries={currentTry}
+          goalWord={goalWordRef.current.toUpperCase()}
+          setGameState={setGameState}
+          lang={lang}
+        ></GameOver>
+      )}
       <Words
         currentInputs={currentInputs}
         tries={tries}
@@ -162,9 +215,12 @@ function Game({ setGameState, tries, size }: Props) {
         currentTry={currentTry}
         invalidWord={invalidWord}
         inputsColors={inputsColors}
+        currentLetter={currentLetter}
+        onClickLetter={onClickLetter}
+        pulsing={pulsing}
       ></Words>
       <Keyboard
-        onClickLetter={onClickLetter}
+        onClickKey={onClickKey}
         onClickEnter={onClickEnter}
         onClickBackSpace={onClickBackSpace}
         keyColors={keyColors}

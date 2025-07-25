@@ -7,6 +7,9 @@ interface Props {
   currentTry: number;
   invalidWord: boolean;
   inputsColors: string[][];
+  currentLetter: number;
+  onClickLetter: (event: any) => void;
+  pulsing: boolean;
 }
 
 function Words({
@@ -16,7 +19,11 @@ function Words({
   currentTry,
   invalidWord,
   inputsColors,
+  currentLetter,
+  onClickLetter,
+  pulsing
 }: Props) {
+  
   let words: React.JSX.Element[] = [];
   for (let i = 0; i < tries; i++) {
     words.push(
@@ -26,7 +33,10 @@ function Words({
         value={currentInputs[i]}
         invalidWord={currentTry === i ? invalidWord : false}
         colors={inputsColors[i]}
-        pulsing={currentTry === i}
+        pulsing={pulsing}
+        currentLetter={currentTry === i ? currentLetter : -1}
+        tryNb={i}
+        onClickLetter={onClickLetter}
       />
     );
   }

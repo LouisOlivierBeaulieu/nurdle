@@ -3,13 +3,25 @@ interface Props {
   color: string;
   pulse: string;
   index: number;
+  current: string;
+  tryNb: number;
+  onClickLetter: (event: any) => void;
 }
 
-function Letter({ value, color, pulse, index }: Props) {
+function Letter({
+  value,
+  color,
+  pulse,
+  index,
+  current,
+  tryNb,
+  onClickLetter,
+}: Props) {
   const time = 0.3;
   return (
     <div
-      className={" letter " + pulse}
+      id={tryNb + "-" + index + "-outer"}
+      className={current + " letter " + pulse}
       style={
         color !== ""
           ? {
@@ -21,8 +33,11 @@ function Letter({ value, color, pulse, index }: Props) {
             }
           : {}
       }
+      onClick={onClickLetter}
     >
       <div
+        onClick={onClickLetter}
+        id={tryNb + "-" + index + "-inner"}
         style={
           color !== ""
             ? {
