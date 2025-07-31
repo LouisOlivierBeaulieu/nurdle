@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Menu from "./components/Menu";
-import { GAME_STATE_MENU } from "./constants";
+import { GAME_STATE_MENU, LANG_EN } from "./constants";
 import Game from "./components/Game";
 import Nav from "./components/Nav";
 
@@ -9,8 +9,8 @@ function App() {
   const [gameState, setGameState] = useState(GAME_STATE_MENU);
   const [size, setSize] = useState(5);
   const [tries, setTries] = useState(6);
-  const [lang, setlang] = useState("fr");
-
+  const [lang, setlang] = useState(LANG_EN);
+  
   return (
     <>
       <Nav setGameState={setGameState}>Nurdle</Nav>
