@@ -53,9 +53,10 @@ h1 {
 }
 
 .letter {
-  width: clamp(1rem, 10vw, 3rem);
+  width: 5vmin;
+  height: 5vmin;
   aspect-ratio: 1 / 1;
-  font-size: clamp(1rem, 10vw, 3rem);
+  font-size: clamp(0.5rem, 5vmin, 2.5rem);
   cursor: pointer;
 }
 
@@ -64,6 +65,8 @@ h1 {
 }
 
 .key {
+  background-color: #2b2a33;
+  color: white;
   width: clamp(1rem, 9vw, 3.5rem);
   height: 7vh;
   display: flex;
@@ -108,12 +111,16 @@ h1 {
 }
 
 .backspace {
-  font-size: clamp(0.5rem, 4vw, 2rem);
+  background-color: #2b2a33;
+  color: white;
+  font-size: clamp(1rem, 6vw, 2rem);
   width: clamp(3em, 8vw, 2em);
 }
 
 .enter {
-  font-size: clamp(0.5rem, 4vw, 2rem);
+  background-color: #2b2a33;
+  color: white;
+  font-size: clamp(1rem, 6vw, 2rem);
   width: clamp(3em, 8vw, 2em);
 }
 
@@ -211,6 +218,7 @@ h1 {
 }
 
 #nurdle-play-button {
+  border: 2px solid #8f8f9d;
   align-items: center;
   background-color: #242424;
   color: #ffffff;
@@ -243,6 +251,7 @@ h1 {
 }
 
 .lang-button {
+  border: 2px solid #8f8f9d;
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
@@ -262,6 +271,7 @@ h1 {
   color: black;
 }
 .number-selector {
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -305,12 +315,14 @@ h1 {
 }
 
 .arrow-button {
+  border: 2px solid #8f8f9d;
   background-color: #242424;
   color: white;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   padding: 0.2rem;
-  height: 1.5rem;
-  min-width: 30px;
+  height: 2rem;
+  min-width: 45px;
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -320,11 +332,56 @@ h1 {
   justify-content: center;
 }
 
-.arrow-button:hover {
-  background-color: #777777;
-}
-
 .arrow-button:active {
   background-color: white;
   color: black;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-left: auto;     
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  margin-right: 30px;
+  margin-top: 5px;
+}
+
+.menu-button:hover {
+  color: rgb(119, 196, 48);;
+}
+
+
+.dropdown {
+  border-top: 1px solid rgb(100, 100, 100);
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: #333;
+  padding: 0.5rem;
+  min-width: 160px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.dropdown h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: rgb(119, 196, 48);
+}
+
+.dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown li {
+  padding: 0.25rem 0;
 }

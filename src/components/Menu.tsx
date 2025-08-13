@@ -1,4 +1,6 @@
-import { GAME_STATE_NURDLE } from "../constants";
+import {
+  GAME_STATE_NURDLE,
+} from "../constants";
 import LanguagePicker from "./LanguagePicker";
 import NumberSelector from "./NumberSelector";
 
@@ -21,14 +23,24 @@ function Menu({
   setLang,
   lang,
 }: Props) {
-  
-  //setSize(parseInt((e.target as HTMLInputElement).value));
+
   return (
     <>
-      <h1>Nurdle</h1>
       <LanguagePicker setLang={setLang} lang={lang}></LanguagePicker>
-      <NumberSelector label="Word Size" value={size} setValue={setSize} min={3} max={7}></NumberSelector>
-      <NumberSelector label="Tries" value={tries} setValue={setTries} min={3} max={7}></NumberSelector>
+      <NumberSelector
+        label="Word Size"
+        value={size}
+        setValue={setSize}
+        min={3}
+        max={7}
+      ></NumberSelector>
+      <NumberSelector
+        label="Tries"
+        value={tries}
+        setValue={setTries}
+        min={3}
+        max={7}
+      ></NumberSelector>
       <button
         id="nurdle-play-button"
         onClick={() => setGameState(GAME_STATE_NURDLE)}

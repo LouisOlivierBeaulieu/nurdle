@@ -4,11 +4,17 @@ import Words from "./Words";
 
 import GameOver from "./GameOver";
 import {
+  NURDLE_LOSSES_LS_KEY,
   NURDLE_STATE_LOSE,
   NURDLE_STATE_PLAYING,
   NURDLE_STATE_WIN,
+  NURDLE_WINS_LS_KEY,
 } from "../constants";
 import { getWordlist } from "../utils/getWordlist";
+import {
+  loadFromLocalStorage,
+  saveToLocalStorage,
+} from "../utils/localStorage";
 
 interface Props {
   setGameState: (gameState: string) => void;
@@ -24,7 +30,7 @@ function Game({ setGameState, tries, size, lang }: Props) {
   );
 
   const [currentInputs, setCurrentInputs] = useState(
-    Array(tries).fill("     ")
+    Array(tries).fill(" ".repeat(size))
   );
   const [currentTry, setCurrentTry] = useState(0);
   const [invalidWord, setInvalidWord] = useState(false);
@@ -91,8 +97,6 @@ function Game({ setGameState, tries, size, lang }: Props) {
     }
   }, [currentInputs, setCurrentInputs, currentTry, currentLetter]);
 
-  console.log(currentInputs);
-
   const validateWord = useCallback(
     async (word: string) => {
       let tempWord = word.toUpperCase().split("");
@@ -146,8 +150,14 @@ function Game({ setGameState, tries, size, lang }: Props) {
       if (
         newInputsColors[currentTry].every((color: string) => color === "green")
       ) {
+        let wins = loadFromLocalStorage(NURDLE_WINS_LS_KEY);
+        wins = wins !== null ? wins : 0;
+        saveToLocalStorage(NURDLE_WINS_LS_KEY, wins + 1);
         setNurdleState(NURDLE_STATE_WIN);
       } else if (currentTry + 1 === tries) {
+        let losses = loadFromLocalStorage(NURDLE_LOSSES_LS_KEY);
+        losses = losses !== null ? losses : 0;
+        saveToLocalStorage(NURDLE_LOSSES_LS_KEY, losses + 1);
         setNurdleState(NURDLE_STATE_LOSE);
       }
     },
@@ -155,10 +165,8 @@ function Game({ setGameState, tries, size, lang }: Props) {
   );
 
   const onClickEnter = useCallback(() => {
-    if (
-      currentInputs[currentTry].length === size &&
-      wordlistRef.current.includes(currentInputs[currentTry].toLowerCase())
-    ) {
+    console.log(wordlistRef.current, currentInputs[currentTry].toLowerCase());
+    if (wordlistRef.current.includes(currentInputs[currentTry].toLowerCase())) {
       validateWord(currentInputs[currentTry]);
       let newCurrentTry = currentTry + 1;
       setCurrentTry(newCurrentTry);

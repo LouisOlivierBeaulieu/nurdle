@@ -12,6 +12,7 @@ import { en_7 } from "../wordlists/en_7";
 
 export function getWordlist(size: number, lang: string) {
   let wordlist: string[];
+
   if (lang === "en") {
     switch (size) {
       case 3:

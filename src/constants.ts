@@ -1,7 +1,9 @@
 export const GAME_STATE_MENU = "Menu";
 export const GAME_STATE_NURDLE = "Nurdle";
 export const NURDLE_STATE_PLAYING = "Playing";
-export const NURDLE_STATE_WIN = "Win";
-export const NURDLE_STATE_LOSE = "Lose";
+export const NURDLE_STATE_WIN = "Nurdle_W";
+export const NURDLE_STATE_LOSE = "Nurdle_L";
+export const NURDLE_WINS_LS_KEY = "Nurdle_W";
+export const NURDLE_LOSSES_LS_KEY = "Nurdle_L";
 export const LANG_FR = "fr";
 export const LANG_EN = "en";
