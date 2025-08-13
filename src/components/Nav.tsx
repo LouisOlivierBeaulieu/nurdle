@@ -32,7 +32,7 @@ function Nav({ children, setGameState }: Props) {
           className="menu-button"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
-          <img src={menuOpen ? "/nurdle-logo-green.png" : "/nurdle-logo.png"} alt="Player Stats Menu" width={40}></img>
+          <img src={menuOpen ? "nurdle-logo-green.png" : "nurdle-logo.png"} alt="Player Stats Menu" width={40}></img>
         </button>
         {menuOpen && (
           <div className="dropdown">
