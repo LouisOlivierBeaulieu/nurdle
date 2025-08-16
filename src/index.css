@@ -6,6 +6,7 @@
   font-family: nyt-karnak-condensed;
   line-height: 1.5;
   font-weight: 400;
+  max-width: 100%;
 
   margin-top: 100px;
 
@@ -35,6 +36,8 @@ body {
   color: rgb(255, 255, 255);
   height: 100%;
   width: 100%;
+  max-width: 100vw;
+  user-select: none;
 }
 
 h1 {
@@ -53,10 +56,10 @@ h1 {
 }
 
 .letter {
-  width: 5vmin;
-  height: 5vmin;
+  width: clamp(0.5rem, 7.8vmin, 2rem);
   aspect-ratio: 1 / 1;
-  font-size: clamp(0.5rem, 5vmin, 2.5rem);
+  font-size: clamp(0.5rem, 7.8vmin, 2rem);
+  user-select: none;
   cursor: pointer;
 }
 
@@ -67,14 +70,14 @@ h1 {
 .key {
   background-color: #2b2a33;
   color: white;
-  width: clamp(1rem, 9vw, 3.5rem);
-  height: 7vh;
+  width: clamp(0.5rem, 8.7vmin, 3rem);
+  aspect-ratio: 1/1.5;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   cursor: pointer;
-  font-size: clamp(1rem, 6vw, 2rem);
+  font-size: clamp(0.2rem, 6vmin, 2rem);
 }
 
 .row {

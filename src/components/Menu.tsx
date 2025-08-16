@@ -32,14 +32,14 @@ function Menu({
         value={size}
         setValue={setSize}
         min={3}
-        max={7}
+        max={6}
       ></NumberSelector>
       <NumberSelector
         label="Tries"
         value={tries}
         setValue={setTries}
         min={3}
-        max={7}
+        max={6}
       ></NumberSelector>
       <button
         id="nurdle-play-button"

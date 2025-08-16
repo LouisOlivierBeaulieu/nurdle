@@ -2,12 +2,10 @@ import { fr_3 } from "../wordlists/fr_3";
 import { fr_4 } from "../wordlists/fr_4";
 import { fr_5 } from "../wordlists/fr_5";
 import { fr_6 } from "../wordlists/fr_6";
-import { fr_7 } from "../wordlists/fr_7";
 import { en_3 } from "../wordlists/en_3";
 import { en_4 } from "../wordlists/en_4";
 import { en_5 } from "../wordlists/en_5";
 import { en_6 } from "../wordlists/en_6";
-import { en_7 } from "../wordlists/en_7";
 
 
 export function getWordlist(size: number, lang: string) {
@@ -27,9 +25,6 @@ export function getWordlist(size: number, lang: string) {
       case 6:
         wordlist = en_6;
         break;
-      case 7:
-        wordlist = en_7;
-        break;
       default:
         wordlist = en_5;
     }
@@ -46,9 +41,6 @@ export function getWordlist(size: number, lang: string) {
         break;
       case 6:
         wordlist = fr_6;
-        break;
-      case 7:
-        wordlist = fr_7;
         break;
       default:
         wordlist = fr_5;
