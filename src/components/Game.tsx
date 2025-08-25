@@ -165,7 +165,6 @@ function Game({ setGameState, tries, size, lang }: Props) {
   );
 
   const onClickEnter = useCallback(() => {
-    console.log(wordlistRef.current, currentInputs[currentTry].toLowerCase());
     if (wordlistRef.current.includes(currentInputs[currentTry].toLowerCase())) {
       validateWord(currentInputs[currentTry]);
       let newCurrentTry = currentTry + 1;
@@ -210,6 +209,9 @@ function Game({ setGameState, tries, size, lang }: Props) {
     <>
       {nurdleState !== NURDLE_STATE_PLAYING && (
         <GameOver
+          won={inputsColors[currentTry - 1].every(
+            (color: string) => color === "green"
+          )}
           tries={currentTry}
           goalWord={goalWordRef.current.toUpperCase()}
           setGameState={setGameState}

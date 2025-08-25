@@ -5,11 +5,13 @@ interface Props {
   tries: number;
   setGameState: (gameState: string) => void;
   lang: string;
+  won: boolean;
 }
 
-function GameOver({ goalWord, tries, setGameState, lang }: Props) {
+function GameOver({ goalWord, tries, setGameState, lang, won }: Props) {
   return (
     <div id="game-over">
+      <span>{won ? "You win" : "You lost"}</span>
       <span>Word : {goalWord}</span>
       <span>Tries : {tries}</span>
       <button onClick={() => setGameState(GAME_STATE_MENU)}>Menu</button>
