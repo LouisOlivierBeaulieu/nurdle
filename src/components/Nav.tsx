@@ -13,7 +13,7 @@ interface Props {
 
 function Nav({ children, setGameState }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const REACT_APP_FLAG = "FLAG{NERDLE}";
+  const FLAG = "FLAG{NERDLE}";
   let losses = loadFromLocalStorage(NURDLE_LOSSES_LS_KEY);
   losses = losses !== null ? losses : 0;
 
@@ -46,7 +46,7 @@ function Nav({ children, setGameState }: Props) {
               <li>Win Ratio: {stringWinRatio}</li>
               <li>Wins: {wins}</li>
               <li>Losses: {losses}</li>
-              {wins === 987523 && <li>{REACT_APP_FLAG}</li>}
+              {wins === 987523 && <li>{FLAG}</li>}
             </ul>
           </div>
         )}
