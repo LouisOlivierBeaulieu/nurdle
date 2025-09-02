@@ -13,7 +13,7 @@ interface Props {
 
 function Nav({ children, setGameState }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const flag = "FLAG{test}";
+  const REACT_APP_FLAG = "FLAG{NERDLE}";
   let losses = loadFromLocalStorage(NURDLE_LOSSES_LS_KEY);
   losses = losses !== null ? losses : 0;
 
@@ -32,7 +32,11 @@ function Nav({ children, setGameState }: Props) {
           className="menu-button"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
-          <img src={menuOpen ? "nurdle-logo-green.png" : "nurdle-logo.png"} alt="Player Stats Menu" width={40}></img>
+          <img
+            src={menuOpen ? "nurdle-logo-green.png" : "nurdle-logo.png"}
+            alt="Player Stats Menu"
+            width={40}
+          ></img>
         </button>
         {menuOpen && (
           <div className="dropdown">
@@ -42,9 +46,7 @@ function Nav({ children, setGameState }: Props) {
               <li>Win Ratio: {stringWinRatio}</li>
               <li>Wins: {wins}</li>
               <li>Losses: {losses}</li>
-              {wins === 987523 &&
-              <li>{flag}</li>
-              }
+              {wins === 987523 && <li>{REACT_APP_FLAG}</li>}
             </ul>
           </div>
         )}
